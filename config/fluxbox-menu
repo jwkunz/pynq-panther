@@ -1,0 +1,38 @@
+# panther-managed fluxbox menu (written by pynq-panther's install.sh; delete this line to keep your own edits)
+# Debian's generated menu (Applications, Configuration, Exit, ...) is included at the bottom.
+[begin] (Pynq-Z2)
+   [exec] (Terminal) {xterm}
+   [exec] (File manager) {pcmanfm}
+   [exec] (Web browser) {panther-browser}
+   [exec] (Jupyter notebooks) {panther-browser http://localhost:9090/}
+   [exec] (Text editor - Geany) {geany}
+   [exec] (Terminal editor - micro) {xterm -e micro}
+   [submenu] (Display resolution) {}
+      [exec] (1920x1080 @ 30 Hz) {xrandr --output HDMI-1 --mode 1920x1080}
+      [exec] (1366x768) {xrandr --output HDMI-1 --mode 1366x768}
+      [exec] (1280x800) {xrandr --output HDMI-1 --mode 1280x800}
+      [exec] (1280x720) {xrandr --output HDMI-1 --mode 1280x720}
+      [exec] (1024x768) {xrandr --output HDMI-1 --mode 1024x768}
+      [exec] (800x600) {xrandr --output HDMI-1 --mode 800x600}
+      [exec] (640x480) {xrandr --output HDMI-1 --mode 640x480}
+   [end]
+   [submenu] (Colour theme) {}
+      [style] (Pink Dark - default) {~/.fluxbox/styles/PinkDark}
+      [separator]
+      [stylesdir] (~/.fluxbox/styles)
+      [stylesdir] (/usr/share/fluxbox/styles)
+   [end]
+   [submenu] (PYNQ help) {}
+      [exec] (PYNQ tutorial notebooks - on this board) {panther-browser http://localhost:9090/tree/getting_started}
+      [exec] (Base overlay notebooks - on this board) {panther-browser http://localhost:9090/tree/base}
+      [exec] (PYNQ documentation - online) {panther-browser https://pynq.readthedocs.io/en/v3.1/}
+      [exec] (PYNQ-Z2 setup guide - online) {panther-browser https://pynq.readthedocs.io/en/v3.1/getting_started/pynq_z2_setup.html}
+   [end]
+   [submenu] (Board) {}
+      [exec] (Desktop service log) {xterm -hold -e journalctl -u panther-desktop --no-pager}
+      [exec] (Memory and CPU) {xterm -e top}
+      [exec] (Sound mixer) {xterm -e alsamixer -c panther}
+   [end]
+   [separator]
+   [include] (/etc/X11/fluxbox/fluxbox-menu)
+[end]

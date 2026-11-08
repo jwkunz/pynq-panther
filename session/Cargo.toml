@@ -1,0 +1,13 @@
+[package]
+name = "panther-session"
+version = "0.1.0"
+edition = "2021"
+description = "Starts the panther_drm kernel module and a minimal X desktop at boot on the PYNQ-Z2; stays headless on failure"
+license = "GPL-2.0-only"
+
+[dependencies]
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

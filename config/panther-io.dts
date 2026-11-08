@@ -1,0 +1,105 @@
+/dts-v1/;
+/plugin/;
+
+/*
+ * panther-io.dts - describes the base overlay's buttons, switches and LEDs to Linux.
+ *
+ * The base overlay contains four Xilinx AXI GPIO blocks. The kernel already has the drivers (gpio-xilinx, gpio-keys-polled,
+ * leds-gpio); what is missing is a devicetree that says where the blocks are. The boot devicetree cannot say it, because the
+ * blocks only exist after the base bitstream has been loaded into the FPGA, so this file is applied at run time (see
+ * scripts/panther-io-load.sh). Touching an unconfigured block would hang the CPU - never apply this before the bitstream.
+ *
+ * Interrupts are left out on purpose: the buttons are polled every 20 ms, which is plenty for humans and needs no wiring.
+ *
+ * Addresses come from the hardware description of the overlay (base.hwh):
+ *   switches 0x41200000 (2 bits)   buttons 0x41210000 (4 bits)   RGB LEDs 0x41240000 (6 bits)   LEDs 0x41250000 (4 bits)
+ */
+/ {
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			pz2_switches: gpio@41200000 {
+				compatible = "xlnx,xps-gpio-1.00.a";
+				reg = <0x41200000 0x10000>;
+				#gpio-cells = <2>;
+				gpio-controller;
+				xlnx,gpio-width = <2>;
+				xlnx,all-inputs = <1>;
+				xlnx,all-outputs = <0>;
+				xlnx,dout-default = <0>;
+				xlnx,tri-default = <0xffffffff>;
+				xlnx,is-dual = <0>;
+				xlnx,interrupt-present = <0>;
+			};
+			pz2_buttons: gpio@41210000 {
+				compatible = "xlnx,xps-gpio-1.00.a";
+				reg = <0x41210000 0x10000>;
+				#gpio-cells = <2>;
+				gpio-controller;
+				xlnx,gpio-width = <4>;
+				xlnx,all-inputs = <1>;
+				xlnx,all-outputs = <0>;
+				xlnx,dout-default = <0>;
+				xlnx,tri-default = <0xffffffff>;
+				xlnx,is-dual = <0>;
+				xlnx,interrupt-present = <0>;
+			};
+			pz2_rgbleds: gpio@41240000 {
+				compatible = "xlnx,xps-gpio-1.00.a";
+				reg = <0x41240000 0x10000>;
+				#gpio-cells = <2>;
+				gpio-controller;
+				xlnx,gpio-width = <6>;
+				xlnx,all-inputs = <0>;
+				xlnx,all-outputs = <1>;
+				xlnx,dout-default = <0>;
+				xlnx,tri-default = <0xffffffff>;
+				xlnx,is-dual = <0>;
+				xlnx,interrupt-present = <0>;
+			};
+			pz2_leds: gpio@41250000 {
+				compatible = "xlnx,xps-gpio-1.00.a";
+				reg = <0x41250000 0x10000>;
+				#gpio-cells = <2>;
+				gpio-controller;
+				xlnx,gpio-width = <4>;
+				xlnx,all-inputs = <0>;
+				xlnx,all-outputs = <1>;
+				xlnx,dout-default = <0>;
+				xlnx,tri-default = <0xffffffff>;
+				xlnx,is-dual = <0>;
+				xlnx,interrupt-present = <0>;
+			};
+
+			/*
+			 * Buttons become keyboard keys, switches become switch events. Key numbers are from
+			 * include/uapi/linux/input-event-codes.h; change them to taste (avoid KEY_POWER: systemd would power off).
+			 */
+			pz2-keys {
+				compatible = "gpio-keys-polled";
+				poll-interval = <20>;
+				button-0 { label = "BTN0"; gpios = <&pz2_buttons 0 0>; linux,code = <114>; };	/* KEY_VOLUMEDOWN */
+				button-1 { label = "BTN1"; gpios = <&pz2_buttons 1 0>; linux,code = <115>; };	/* KEY_VOLUMEUP */
+				button-2 { label = "BTN2"; gpios = <&pz2_buttons 2 0>; linux,code = <113>; };	/* KEY_MUTE */
+				button-3 { label = "BTN3"; gpios = <&pz2_buttons 3 0>; linux,code = <164>; };	/* KEY_PLAYPAUSE */
+				switch-0 { label = "SW0"; gpios = <&pz2_switches 0 0>; linux,input-type = <5>; linux,code = <6>; };	/* SW_LINEOUT_INSERT */
+				switch-1 { label = "SW1"; gpios = <&pz2_switches 1 0>; linux,input-type = <5>; linux,code = <7>; };	/* SW_JACK_PHYSICAL_INSERT */
+			};
+
+			/* LEDs show up under /sys/class/leds/ and support triggers (heartbeat, disk activity, ...) */
+			pz2-leds {
+				compatible = "gpio-leds";
+				led-0 { label = "pynqz2:green:ld0"; gpios = <&pz2_leds 0 0>; };
+				led-1 { label = "pynqz2:green:ld1"; gpios = <&pz2_leds 1 0>; };
+				led-2 { label = "pynqz2:green:ld2"; gpios = <&pz2_leds 2 0>; };
+				led-3 { label = "pynqz2:green:ld3"; gpios = <&pz2_leds 3 0>; };
+				led-4r { label = "pynqz2:red:ld4"; gpios = <&pz2_rgbleds 0 0>; };
+				led-4g { label = "pynqz2:green:ld4"; gpios = <&pz2_rgbleds 1 0>; };
+				led-4b { label = "pynqz2:blue:ld4"; gpios = <&pz2_rgbleds 2 0>; };
+				led-5r { label = "pynqz2:red:ld5"; gpios = <&pz2_rgbleds 3 0>; };
+				led-5g { label = "pynqz2:green:ld5"; gpios = <&pz2_rgbleds 4 0>; };
+				led-5b { label = "pynqz2:blue:ld5"; gpios = <&pz2_rgbleds 5 0>; };
+			};
+		};
+	};
+};

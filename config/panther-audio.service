@@ -1,0 +1,14 @@
+[Unit]
+Description=Experimental sound card for the PYNQ-Z2 codec (headphones, line in, microphone)
+# the driver talks to the audio block inside the FPGA: wait until bootpy.service has loaded the base bitstream
+After=bootpy.service
+# (no Wants=bootpy.service: it would re-run boot.py and reload the FPGA; see panther-desktop.service)
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/modprobe panther_audio
+ExecStop=/sbin/rmmod panther_audio
+
+[Install]
+WantedBy=multi-user.target

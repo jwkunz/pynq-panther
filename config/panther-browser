@@ -1,0 +1,7 @@
+#!/bin/sh
+# panther-browser - open the web browser (Epiphany) on the PYNQ-Z2 desktop; default page: the board's own Jupyter.
+#   panther-browser [URL]
+# WEBKIT_DISABLE_COMPOSITING_MODE: the board has no GPU, so WebKit must not try to composite with OpenGL.
+# (The browser's security sandbox stays ON.)
+export WEBKIT_DISABLE_COMPOSITING_MODE=1
+exec epiphany-browser --new-window "${1:-http://localhost:9090/}"

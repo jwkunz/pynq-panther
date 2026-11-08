@@ -1,0 +1,14 @@
+[Unit]
+Description=Buttons, switches and LEDs of the PYNQ-Z2 as Linux input and LED devices
+# the overlay describes blocks inside the FPGA: bootpy.service must have loaded the base bitstream first
+After=bootpy.service
+# (no Wants=bootpy.service: it would re-run boot.py and reload the FPGA; see panther-desktop.service)
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/panther/panther-io-load.sh load
+ExecStop=/usr/local/lib/panther/panther-io-load.sh unload
+
+[Install]
+WantedBy=multi-user.target

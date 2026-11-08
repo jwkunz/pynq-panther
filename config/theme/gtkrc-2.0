@@ -1,0 +1,26 @@
+# panther-managed (written by pynq-panther's install.sh; delete this line to keep your own edits)
+# Pink and dark for GTK2 programs. Ubuntu's PCManFM file manager is a GTK2 program, so the GTK3 files do not reach it.
+gtk-font-name = "Sans 10"
+style "panther" {
+  bg[NORMAL]        = "#120a0f"
+  bg[PRELIGHT]      = "#1f111a"
+  bg[ACTIVE]        = "#1f111a"
+  bg[SELECTED]      = "#ff3389"
+  bg[INSENSITIVE]   = "#170d13"
+  fg[NORMAL]        = "#f7e6ee"
+  fg[PRELIGHT]      = "#ffffff"
+  fg[ACTIVE]        = "#f7e6ee"
+  fg[SELECTED]      = "#050505"
+  fg[INSENSITIVE]   = "#80566a"
+  base[NORMAL]      = "#050505"
+  base[PRELIGHT]    = "#1f111a"
+  base[ACTIVE]      = "#eb196f"
+  base[SELECTED]    = "#ff3389"
+  base[INSENSITIVE] = "#120a0f"
+  text[NORMAL]      = "#f7e6ee"
+  text[PRELIGHT]    = "#f7e6ee"
+  text[ACTIVE]      = "#f7e6ee"
+  text[SELECTED]    = "#050505"
+  text[INSENSITIVE] = "#80566a"
+}
+class "GtkWidget" style "panther"

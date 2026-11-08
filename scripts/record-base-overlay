@@ -1,0 +1,9 @@
+#!/bin/sh
+# record-base-overlay - remember that the FPGA holds PYNQ's base overlay (run when the desktop starts, only if nothing is recorded yet).
+# The desktop only ever runs on the base overlay, and PYNQ's own boot script has loaded it; the guard (panther_pynq_guard) compares this
+# record with the design a notebook asks for. The record normally exists already (written when the design was loaded).
+[ -s /run/panther/pl-loaded ] && exit 0
+B=$(ls /usr/local/share/pynq-venv/lib/python3*/site-packages/pynq/overlays/base/base.bit 2>/dev/null | head -1)
+[ -f "$B" ] || exit 0
+mkdir -p /run/panther
+sha1sum "$B" | cut -d' ' -f1 > /run/panther/pl-loaded

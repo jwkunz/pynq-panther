@@ -1,0 +1,18 @@
+# build products
+/session/target/
+*.ko
+*.o
+*.mod
+*.mod.c
+.*.cmd
+modules.order
+Module.symvers
+.tmp_versions/
+/workspace/*
+!/workspace/.gitkeep
+__pycache__/
+
+# offline package bundles are release assets, never committed
+/offline-out/
+/panther-offline-bundle*/
+*.tar.gz

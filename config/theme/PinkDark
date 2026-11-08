@@ -1,0 +1,130 @@
+## PinkDark - the pynq-panther fluxbox style: near-black with the pink of the Pynq Panther wallpaper.
+## Palette (sampled from the wallpaper):  black #050505   panel #120a0f   raised #1f111a   border #6e1f45   text #f7e6ee   dim text #b58aa0
+##           panther pink #ff3389   soft pink #ecacc4   trace pink #eb196f
+## Derived in structure from fluxbox's "ubuntu-dark" style; all colours are new.
+style.name:				Pink Dark
+style.author:				pynq-panther
+# the desktop: the Pynq Panther wallpaper, scaled to fit with its aspect ratio kept; the letterbox colour is the picture's own near-black.
+# (fluxbox hands the picture to its helper "fbsetbg", which uses feh. Without this section fluxbox would re-apply whatever wallpaper was used last.)
+background:				aspect
+background.pixmap:			/usr/local/lib/panther/theme/pynq-panther-wallpaper.png
+background.color:			#050505
+# fonts ------------------------------------------
+menu.frame.font:			sans-9:bold
+menu.title.font:			sans-10:bold
+toolbar.clock.font:			sans-9:bold
+toolbar.workspace.font:			sans-9:bold
+toolbar.iconbar.focused.font:		sans-8:bold
+toolbar.iconbar.unfocused.font:		sans-8
+window.font:				sans-9
+# menu -------------------------------------------
+menu.roundCorners: 			topleft topright bottomleft bottomright
+menu.bevelWidth:			1
+menu.itemHeight:			18
+menu.titleHeight:			20
+menu.borderColor:			#6e1f45
+menu.borderWidth:			1
+menu.bullet:				triangle
+menu.bullet.position:			Right
+menu.title:				flat gradient rectangle
+menu.title.justify:			center
+menu.title.color:			#1f111a
+menu.title.colorTo:			#ff3389
+menu.title.textColor:			#050505
+menu.frame:				flat gradient
+menu.frame.justify:			left
+menu.frame.color:			#120a0f
+menu.frame.colorTo:			#050505
+menu.frame.textColor:			#f7e6ee
+menu.frame.disableColor:		#80566a
+menu.hilite:				flat gradient
+menu.hilite.color:			#ff3389
+menu.hilite.colorTo:			#eb196f
+menu.hilite.textColor:			#050505
+# toolbar ----------------------------------------
+toolbar.bevelWidth:			1
+toolbar.borderWidth:			1
+toolbar.borderColor:			#6e1f45
+toolbar.height:				22
+toolbar.justify:			center
+toolbar:				flat gradient
+toolbar.color:				#120a0f
+toolbar.colorTo:			#050505
+toolbar.clock:				flat gradient rectangle
+toolbar.clock.justify:			center
+toolbar.clock.color:			#050505
+toolbar.clock.colorTo:			#1f111a
+toolbar.clock.textColor:		#ecacc4
+toolbar.workspace:			flat gradient
+toolbar.workspace.justify:		Center
+toolbar.workspace.color:		#050505
+toolbar.workspace.colorTo:		#1f111a
+toolbar.workspace.textColor:		#ecacc4
+toolbar.button:				flat
+toolbar.button.color:			#050505
+toolbar.button.colorTo:			#050505
+toolbar.button.picColor:		#f7e6ee
+toolbar.button.pressed:			flat
+toolbar.button.pressed.color:		#ff3389
+toolbar.button.pressed.colorTo:		#ff3389
+toolbar.button.pressed.picColor:	#050505
+toolbar.iconbar.empty:			flat
+toolbar.iconbar.empty.color:		#050505
+toolbar.iconbar.empty.colorTo:		#050505
+toolbar.iconbar.focused:		flat gradient
+toolbar.iconbar.focused.color:		#ff3389
+toolbar.iconbar.focused.colorTo:	#eb196f
+toolbar.iconbar.focused.textColor:	#050505
+toolbar.iconbar.focused.justify:	center
+toolbar.iconbar.unfocused:		flat
+toolbar.iconbar.unfocused.color:	#120a0f
+toolbar.iconbar.unfocused.colorTo:	#120a0f
+toolbar.iconbar.unfocused.textColor:	#b58aa0
+toolbar.iconbar.unfocused.justify:	center
+# windows ----------------------------------------
+window.roundCorners: 			topleft topright
+window.bevelWidth:			1
+window.shade:				true
+window.borderWidth:			1
+window.borderColor:			#6e1f45
+window.justify:				Center
+window.title.height:			22
+window.title.focus:			flat gradient rectangle
+window.title.focus.color:		#1f111a
+window.title.focus.colorTo:		#ff3389
+window.title.unfocus:			flat
+window.title.unfocus.color:		#120a0f
+window.title.unfocus.colorTo:		#120a0f
+window.label.focus:			flat gradient rectangle
+window.label.focus.color:		#1f111a
+window.label.focus.colorTo:		#ff3389
+window.label.focus.textColor:		#ffffff
+window.label.unfocus:			flat
+window.label.unfocus.color:		#120a0f
+window.label.unfocus.colorTo:		#120a0f
+window.label.unfocus.textColor:		#b58aa0
+window.button.focus:			flat
+window.button.focus.color:		#ff3389
+window.button.focus.colorTo:		#ff3389
+window.button.focus.picColor:		#050505
+window.button.unfocus:			flat
+window.button.unfocus.color:		#120a0f
+window.button.unfocus.colorTo:		#120a0f
+window.button.unfocus.picColor:		#b58aa0
+window.button.pressed:			flat
+window.button.pressed.color:		#ecacc4
+window.button.pressed.colorTo:		#ecacc4
+window.button.pressed.picColor:		#050505
+window.handle.focus:			flat
+window.handle.focus.color:		#1f111a
+window.handle.focus.colorTo:		#1f111a
+window.handle.unfocus:			flat
+window.handle.unfocus.color:		#120a0f
+window.handle.unfocus.colorTo:		#120a0f
+window.handleWidth:			3
+window.grip.focus:			flat
+window.grip.focus.color:		#ff3389
+window.grip.focus.colorTo:		#ff3389
+window.grip.unfocus:			flat
+window.grip.unfocus.color:		#1f111a
+window.grip.unfocus.colorTo:		#1f111a

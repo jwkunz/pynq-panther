@@ -1,0 +1,17 @@
+[Unit]
+Description=HDMI desktop on the PYNQ-Z2 (falls back to headless)
+# bootpy.service loads the base overlay into the PL; the display driver must not start before it has finished.
+# NEVER add Wants=/Requires=bootpy.service here: it is a one-shot, so starting this unit would run boot.py AGAIN,
+# which reloads base.bit into the FPGA underneath a running display and freezes the board. After= only orders.
+After=bootpy.service systemd-udevd.service
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/local/lib/panther/record-base-overlay
+ExecStart=/usr/local/bin/panther-session
+# never fail the boot: panther-session logs why it stayed headless and exits 0
+Restart=no
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

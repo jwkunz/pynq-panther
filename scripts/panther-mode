@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# panther-mode - switch the board between the HDMI desktop and the stock PYNQ notebooks.
+#
+#   sudo panther-mode pynq       stop the desktop, sound card and GPIO devices, unload their drivers.
+#                                Now any PYNQ notebook may load an overlay (BaseOverlay("base.bit"), ...) in safety.
+#   sudo panther-mode desktop    reload the PYNQ base overlay (exactly as at boot) and bring everything back.
+#   panther-mode status          what is running now
+#
+# Why this exists: the desktop's drivers talk to blocks inside the FPGA (video DMA, timing generator, GPIO, audio). PYNQ notebooks start
+# by loading an overlay, which RECONFIGURES the whole FPGA. A bus access to a block that is being rewritten never completes and the CPU
+# freezes (a power cycle is needed). So: free the hardware first (pynq), give it back afterwards (desktop).
+set -u
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+UNITS="panther-desktop panther-audio panther-io"
+
+need_root() { [ "$(id -u)" -eq 0 ] || { echo "run as root: sudo panther-mode ${1:-}" >&2; exit 1; }; }
+
+status() {
+  for u in $UNITS; do printf '  %-16s %s\n' "$u" "$(systemctl is-active $u 2>/dev/null)"; done
+  printf '  %-16s %s\n' "FPGA" "$(cat /sys/class/fpga_manager/fpga0/state 2>/dev/null)"
+  printf '  %-16s %s\n' "modules" "$(lsmod | awk '/^panther_/ {printf "%s ", $1}')"
+}
+
+case "${1:-status}" in
+  pynq)
+    need_root pynq
+    systemctl stop $UNITS 2>/dev/null
+    rmmod panther_audio 2>/dev/null; rmmod panther_drm 2>/dev/null
+    echo "The desktop, the sound card and the GPIO devices are stopped. PYNQ notebooks may now load overlays."
+    echo "When you are done:   sudo panther-mode desktop"
+    status ;;
+  desktop)
+    need_root desktop
+    echo "Reloading the PYNQ base overlay (like at boot; about 30 seconds)..."
+    # the same environment bootpy.service uses to run boot.py
+    ( set +u; . /etc/environment; for f in /etc/profile.d/*.sh; do . "$f"; done
+      python3 -c "from pynq.overlays.base import BaseOverlay; BaseOverlay('base.bit')" ) || { echo "could not load the base overlay; the desktop was NOT started" >&2; exit 1; }
+    systemctl start panther-io panther-audio panther-desktop
+    echo "Back to the desktop."
+    status ;;
+  status) status ;;
+  *) echo "usage: sudo panther-mode pynq | desktop      panther-mode status" >&2; exit 2 ;;
+esac

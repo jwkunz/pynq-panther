@@ -1,0 +1,3 @@
+# The Xilinx XRT accelerator node (zocl, /dev/dri/card0) is a DRM device without any display. libdrm and Xorg crash
+# (NULL strdup) when they probe it. Put it on a seat of its own so Xorg (seat0) never looks at it.
+SUBSYSTEM=="drm", KERNEL=="card[0-9]*", DEVPATH=="*zyxclmm_drm*", ENV{ID_SEAT}="seat-xrt", TAG+="seat-xrt"
